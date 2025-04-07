@@ -22,7 +22,7 @@ void adc_0_task(void *p) {
         result = adc_read();
         printf("voltage 2: %f V\n", result * conversion_factor);
 
-        vTaskDelay(pdMS_TO_TICKS(200)); 
+        vTaskDelay(pdMS_TO_TICKS(300)); 
     }
 }
 
@@ -38,7 +38,7 @@ void adc_1_task(void *p) {
         result = adc_read();
         printf("voltage 1: %f V\n", result * conversion_factor);
 
-        vTaskDelay(pdMS_TO_TICKS(200)); 
+        vTaskDelay(pdMS_TO_TICKS(300)); 
     }
 }
 
@@ -46,8 +46,8 @@ int main() {
     stdio_init_all();
     printf("Start RTOS \n");
 
-    xTaskCreate(adc_0_task, "ADC_Task_0", 4095, NULL, 1, NULL);
-    xTaskCreate(adc_1_task, "ADC_Task_1", 4095, NULL, 1, NULL);
+    xTaskCreate(adc_0_task, "ADC_Task_0", 4096, NULL, 1, NULL);
+    xTaskCreate(adc_1_task, "ADC_Task_1", 4096, NULL, 1, NULL);
 
     vTaskStartScheduler();
 

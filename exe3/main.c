@@ -25,32 +25,30 @@ void data_task(void *p) {
 
 void process_task(void *p) {
     int data = 0;
-    int buffer[5] = {0};    
-    int index = 0;          
-    int sum = 0;            
+    int buffer[5];    
+    int index = 0;
+    int avg =0;                      
     bool buffer_cheio = false; 
 
     while (true) {
         if (xQueueReceive(xQueueData, &data, 100)) {
-            if (!buffer_cheio) {
                 
-                buffer[index] = data;
-                sum += data;
+              buffer[index] = data;
+                int sum = 0;
+                for(int i = 0; i<5;i++){
+                    sum += buffer[i];
+                }
+                avg = sum/5;
                 index++;
                 
-                if (index == 5) {
-                    buffer_cheio = true;
-                    index = 0; 
-                    printf("%d\n", sum / 5); 
+                if(index >=5){
+                    index = 0;
                 }
-            } else {
-                sum -= buffer[index];
-                sum += data;
-                buffer[index] = data;
-                printf("%d\n", sum / 5);
-                
-                index = (index + 1) % 5;
-            vTaskDelay(pdMS_TO_TICKS(50));} 
+    
+                printf("%d\n",avg);
+    
+
+            vTaskDelay(pdMS_TO_TICKS(50));
         
         }
     }
