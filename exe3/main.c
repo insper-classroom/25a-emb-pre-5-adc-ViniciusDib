@@ -25,16 +25,33 @@ void data_task(void *p) {
 
 void process_task(void *p) {
     int data = 0;
+    int buffer[5] = {0};    
+    int index = 0;          
+    int sum = 0;            
+    bool buffer_cheio = false; 
 
     while (true) {
         if (xQueueReceive(xQueueData, &data, 100)) {
-            // implementar filtro aqui!
-
-
-
-
-            // deixar esse delay!
-            vTaskDelay(pdMS_TO_TICKS(50));
+            if (!buffer_cheio) {
+                
+                buffer[index] = data;
+                sum += data;
+                index++;
+                
+                if (index == 5) {
+                    buffer_cheio = true;
+                    index = 0; 
+                    printf("%d\n", sum / 5); 
+                }
+            } else {
+                sum -= buffer[index];
+                sum += data;
+                buffer[index] = data;
+                printf("%d\n", sum / 5);
+                
+                index = (index + 1) % 5;
+            vTaskDelay(pdMS_TO_TICKS(50));} 
+        
         }
     }
 }
